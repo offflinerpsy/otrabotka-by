@@ -6,9 +6,9 @@ import logoImage from "figma:asset/c1c9c571683cff87b5adc0931d8495ad4e7821ae.png"
 
 const SITE_CONFIG = {
   name: "Сбор отработанных масел",
-  phone_primary: "+375 XX XXX-XX-XX",
-  phone_secondary: "",
-  email: "info@oils-collection.by",
+  phone_primary: "+375-25-521-24-09",
+  phone_secondary: "+375-29-322-44-55",
+  email: "Tradenefteprom@bk.ru",
 };
 
 const PAGES_STRUCTURE = [

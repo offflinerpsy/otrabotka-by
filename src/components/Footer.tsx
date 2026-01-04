@@ -3,11 +3,11 @@ import { Phone, Mail, MapPin, Instagram, ArrowUp } from 'lucide-react';
 
 const SITE_CONFIG = {
   name: "Сбор отработанных масел",
-  phone_primary: "+375 XX XXX-XX-XX",
-  phone_secondary: "",
-  email: "info@oils-collection.by",
-  address: "г. Минск, ул. Примерная, д. 1",
-  unp: "XXXXXXXXX",
+  phone_primary: "+375-25-521-24-09",
+  phone_secondary: "+375-29-322-44-55",
+  email: "Tradenefteprom@bk.ru",
+  address: "г. Минск, пр-т Дзержинского, 127 пом. 484",
+  unp: "193918407",
   instagram: "#"
 };
 

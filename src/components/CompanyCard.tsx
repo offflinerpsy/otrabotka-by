@@ -11,7 +11,9 @@ const companyData = {
   legalName: 'ООО «Трейднефтепром»',
   director: 'Поджаров Игорь Александрович',
   phone: '+375-25-521-24-09',
+  phoneOffice: '+375-29-322-44-55',
   email: 'Tradenefteprom@bk.ru',
+  site: 'Tradenefteprom.com',
   legalAddress: '220035, Республика Беларусь, г. Минск, ул.Тарханова 13а, помещение 33, секция 10',
   actualAddress: '220045, Республика Беларусь, г. Минск, пр-т Дзержинского,127 пом. 484',
   warehouseAddresses: [
@@ -68,8 +70,10 @@ export function CompanyCard({ isOpen, onClose }: CompanyCardProps) {
 
   const allRequisites = `ООО «Трейднефтепром»
 Директор: ${companyData.director}
-Телефон: ${companyData.phone}
+Телефон (моб.): ${companyData.phone}
+Телефон (офис): ${companyData.phoneOffice}
 E-mail: ${companyData.email}
+Сайт: ${companyData.site}
 
 Юридический адрес: ${companyData.legalAddress}
 Фактический адрес: ${companyData.actualAddress}
@@ -77,6 +81,7 @@ E-mail: ${companyData.email}
 Банковские реквизиты:
 Расчетный счет (BYN): ${companyData.accountBYN}
 Банк: ${companyData.bankName}
+Адрес банка: ${companyData.bankAddress}
 БИК: ${companyData.bic}
 
 УНН: ${companyData.unn}
@@ -114,7 +119,7 @@ E-mail: ${companyData.email}
                   </div>
                   <div>
                     <h2 className="font-['Roboto:Bold',sans-serif] text-[20px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      Карточка предприятия
+                      Карточка партнера
                     </h2>
                     <p className="font-['Roboto:Regular',sans-serif] text-[13px] text-white/50" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {companyData.legalName}
@@ -147,20 +152,55 @@ E-mail: ${companyData.email}
                     <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4">
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <Phone className="size-4 text-[#fcd900] flex-shrink-0 mt-0.5" />
-                        <a href={`tel:${companyData.phone}`} className="font-['Roboto:Regular',sans-serif] text-[13px] text-[#fcd900] hover:underline flex-1" style={{ fontVariationSettings: "'wdth' 100" }}>
-                          {companyData.phone}
-                        </a>
+                        <div className="flex-1">
+                          <p className="font-['Roboto:Medium',sans-serif] text-[11px] text-white/50 mb-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            Мобильный
+                          </p>
+                          <a href={`tel:${companyData.phone}`} className="font-['Roboto:Regular',sans-serif] text-[13px] text-[#fcd900] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            {companyData.phone}
+                          </a>
+                        </div>
                         <CopyButton text={companyData.phone} field="phone" small />
                       </div>
                     </div>
 
-                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4 md:col-span-2">
+                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <Phone className="size-4 text-[#fcd900] flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="font-['Roboto:Medium',sans-serif] text-[11px] text-white/50 mb-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            Офис
+                          </p>
+                          <a href={`tel:${companyData.phoneOffice}`} className="font-['Roboto:Regular',sans-serif] text-[13px] text-[#fcd900] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            {companyData.phoneOffice}
+                          </a>
+                        </div>
+                        <CopyButton text={companyData.phoneOffice} field="phoneOffice" small />
+                      </div>
+                    </div>
+
+                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4">
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <Mail className="size-4 text-[#fcd900] flex-shrink-0 mt-0.5" />
                         <a href={`mailto:${companyData.email}`} className="font-['Roboto:Regular',sans-serif] text-[13px] text-[#fcd900] hover:underline flex-1 break-all" style={{ fontVariationSettings: "'wdth' 100" }}>
                           {companyData.email}
                         </a>
                         <CopyButton text={companyData.email} field="email" small />
+                      </div>
+                    </div>
+
+                    <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-4">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <Building2 className="size-4 text-[#fcd900] flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="font-['Roboto:Medium',sans-serif] text-[11px] text-white/50 mb-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            Сайт
+                          </p>
+                          <a href={`https://${companyData.site}`} target="_blank" rel="noopener noreferrer" className="font-['Roboto:Regular',sans-serif] text-[13px] text-[#fcd900] hover:underline" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            {companyData.site}
+                          </a>
+                        </div>
+                        <CopyButton text={companyData.site} field="site" small />
                       </div>
                     </div>
                   </div>
@@ -270,6 +310,18 @@ E-mail: ${companyData.email}
                           </div>
                           <CopyButton text={companyData.bankName} field="bankName" small />
                         </div>
+                      </div>
+
+                      <div className="flex items-start justify-between gap-2 mt-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-['Roboto:Medium',sans-serif] text-[11px] text-white/50 mb-0.5" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            Адрес банка
+                          </p>
+                          <p className="font-['Roboto:Regular',sans-serif] text-[13px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
+                            {companyData.bankAddress}
+                          </p>
+                        </div>
+                        <CopyButton text={companyData.bankAddress} field="bankAddress" small />
                       </div>
                     </div>
                   </div>

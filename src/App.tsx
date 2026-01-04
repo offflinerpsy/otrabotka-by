@@ -24,14 +24,20 @@ import imgVacuum1 from "figma:asset/f66ff7c6a6c66e3a83ddf3d5069a4957d63e0458.png
 import imgVacuum2 from "figma:asset/0ef914d7a765c3012a28c7076295695e3c009124.png";
 import imgVacuum3 from "figma:asset/5318ac3b9018886fb691dd49ad8d4521effef82d.png";
 
+// Локальные изображения
+const imgHeroBgDesktop = "/images/hero-bg.png";
+const imgHeroBgMobile = "/images/hero-bg-mobile.png";
+const imgAutopark = "/images/autopark.png";
+const imgMobilePoint = "/images/mobile-point.png";
+
 // ============= КОНТЕНТ МАНИФЕСТ =============
 const SITE_CONFIG = {
   name: "Сбор отработанных масел",
-  phone_primary: "+375 XX XXX-XX-XX",
-  phone_secondary: "",
-  email: "info@oils-collection.by",
-  address: "г. Минск, ул. Примерная, д. 1",
-  unp: "XXXXXXXXX",
+  phone_primary: "+375-25-521-24-09",
+  phone_secondary: "+375-29-322-44-55",
+  email: "Tradenefteprom@bk.ru",
+  address: "г. Минск, пр-т Дзержинского, 127 пом. 484",
+  unp: "193918407",
   instagram: "#"
 };
 
@@ -283,6 +289,14 @@ function HeroWithParallax({ onNavigate }: { onNavigate: (slug: string) => void }
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 1200], [0, 300]);
   const heroOpacity = useTransform(scrollY, [0, 500], [1, 0]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div className="relative bg-black">
@@ -292,9 +306,9 @@ function HeroWithParallax({ onNavigate }: { onNavigate: (slug: string) => void }
           className="absolute top-0 left-0 w-full h-full"
           style={{ 
             y,
-            backgroundImage: `url(${imgHeroBg})`,
+            backgroundImage: `url(${isMobile ? imgHeroBgMobile : imgHeroBgDesktop})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 40%',
+            backgroundPosition: isMobile ? 'center center' : 'center 40%',
             backgroundRepeat: 'no-repeat'
           }}
         />
@@ -418,7 +432,6 @@ function HeroWithParallax({ onNavigate }: { onNavigate: (slug: string) => void }
                 <div className="space-y-3">
                   {[
                     'Производительность до 2000 л/час',
-                    'Сертификация ISO 9001:2008',
                     'Работа 24/7 без остановок'
                   ].map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3">
@@ -648,9 +661,9 @@ function HomePage({ onNavigate }: { onNavigate: (slug: string) => void }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
-            { title: "СТО и автопарки", img: "https://images.unsplash.com/photo-1637640125496-31852f042a60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" },
-            { title: "Промпредприятия", img: "https://images.unsplash.com/photo-1560953981-28e3bab4aab6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" },
-            { title: "Аграрные хозяйства", img: "https://images.unsplash.com/photo-1707515416694-502935a4cff7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" }
+            { title: "СТО и автопарки", img: "https://images.unsplash.com/photo-1637640125496-31852f042a60?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", position: "center" },
+            { title: "Промышленные предприятия", img: "https://images.unsplash.com/photo-1560953981-28e3bab4aab6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", position: "center" },
+            { title: "Аграрные хозяйства", img: "https://images.unsplash.com/photo-1707515416694-502935a4cff7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600", position: "center 90%" }
           ].map((item, idx) => (
             <div key={idx} className="group">
               <div className="overflow-hidden rounded-lg mb-6 shadow-md">
@@ -658,13 +671,14 @@ function HomePage({ onNavigate }: { onNavigate: (slug: string) => void }) {
                   src={item.img}
                   alt={item.title}
                   className="w-full h-[280px] object-cover group-hover:scale-105 transition-transform duration-300"
+                  style={{ objectPosition: item.position }}
                 />
               </div>
               <h3 className="font-['Roboto:Medium',sans-serif] leading-[32px] text-[22px] text-black mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
                 {item.title}
               </h3>
               <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[26px] text-[16px] text-black opacity-70 tracking-[0.36px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                Регулярный вывоз по договору или разо��ые за��вки
+                Регулярный вывоз по договору или разовые заявки
               </p>
             </div>
           ))}
@@ -766,156 +780,87 @@ function VacuumGallery() {
 // ============= СТРАНИЦА: О НАС (объединённая с Информацией) =============
 function AboutPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
   const stats = [
-    { value: "80-90%", label: "Выход базового масла" },
+    { value: "70-80%", label: "Выход базового масла" },
     { value: "500+", label: "Тонн в месяц" },
     { value: "24/7", label: "Работа завода" }
   ];
 
-  const vacuumDistillation = [
+  // Принцип работы вакуумной дистилляции - 5 шагов
+  const processSteps = [
     {
-      title: "Первый дистиллят",
-      description: "Растворенные в сырье топлива и легкие продукты разложения масел, накопившиеся в сырье за время эксплуатации масел",
-      icon: Droplet,
-      color: "from-blue-400 to-cyan-500"
+      step: "01",
+      title: "Подготовка",
+      description: "Отработанные масла очищаются от крупных твердых и металлических включений"
     },
     {
-      title: "Второй дистиллят",
-      description: "Собственно базовые масла — основной продукт переработки высокого качества",
-      icon: Droplet,
-      color: "from-[#fcd900] to-yellow-600"
+      step: "02",
+      title: "Нагрев и испарение",
+      description: "Масло поступает в вакуумный реактор, где нагревается до ~325-380°C, но за счет вакуума кипит при более низких температурах"
     },
     {
-      title: "Третий дистиллят",
-      description: "Кубовый остаток (пластификатор) — смесь тяжелых продуктов окисления и полимеризации масел (смолы), нелетучих присадок и минеральных веществ",
-      icon: Package,
-      color: "from-gray-600 to-gray-800"
+      step: "03",
+      title: "Разделение",
+      description: "Испаряются разные компоненты масла (вода, легкие фракции, бензин, дизель, базовое масло) при разных температурных режимах"
+    },
+    {
+      step: "04",
+      title: "Конденсация",
+      description: "Пары охлаждаются в конденсаторах и превращаются в жидкие фракции"
+    },
+    {
+      step: "05",
+      title: "Сбор",
+      description: "Получаются разные продукты, которые собираются в отдельные емкости: бензин, дизельное топливо, легкое базовое масло"
     }
   ];
 
-  const processSteps = [
+  // Преимущества вакуумной дистилляции - 3 пункта
+  const advantages = [
     {
-      title: "Высокоскоростное центрифугирование",
-      description: "О��деле���ие воды от отработанного масла с п��мощью центробежной силы",
-      icon: Zap,
-      image: "https://images.unsplash.com/photo-1701448149957-b96dbd1926ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"
+      title: "Снижение температуры",
+      description: "Позволяет избежать крекинга (разрушения) молекул углеводородов, повышая качество продукта",
+      icon: Gauge
     },
     {
-      title: "Тонкопленочный испаритель",
-      description: "Удаление легких компонентов и примесей при контролируемой температуре",
-      icon: Wind,
-      image: "https://images.unsplash.com/photo-1761519609120-0f0a84a9932b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"
+      title: "Энергоэффективность",
+      description: "Требует меньше тепла по сравнению с дистилляцией при нормальном давлении",
+      icon: Zap
     },
     {
-      title: "Мембранная дистилляция",
-      description: "Диссоциация нефтяных газов через усовершенствованную систему Vbolt",
-      icon: Beaker,
-      image: "https://images.unsplash.com/photo-1721673677295-180bbac0ca32?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"
-    },
-    {
-      title: "Каталитический крекинг",
-      description: "Сбор фрагментов базового масла при различных температурах с катализатором",
-      icon: Flame,
-      image: "https://images.unsplash.com/photo-1705164686320-cf877bf7f338?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200"
+      title: "Высокий выход",
+      description: "Увеличивает выход готового продукта (до 70-80% в зависимости от сырья)",
+      icon: Target
     }
+  ];
+
+  // Применение
+  const applications = [
+    "Производство новых смазочных материалов",
+    "Получение альтернативных видов топлива",
+    "Утилизация отработанных масел без вреда для окружающей среды"
   ];
 
   const outputProducts = [
     {
-      name: "Базовое масло SN75-SN500",
-      percentage: "80-90%",
-      description: "Акварельного цвета без неприятного запаха",
-      icon: Droplet,
-      color: "from-blue-500 to-cyan-500"
-    },
-    {
-      name: "Вода",
-      percentage: "3-5%",
-      description: "Можно повторно использовать как охлаждающая",
-      icon: Droplet,
-      color: "from-sky-400 to-blue-400"
-    },
-    {
-      name: "Легкий газойль",
+      name: "Первый дистиллят",
       percentage: "5-7%",
-      description: "Обеспечивает энергией всю систему",
-      icon: Flame,
-      color: "from-orange-500 to-red-500"
+      description: "Лёгкие фракции и продукты разложения масел",
+      icon: Droplet,
+      color: "from-red-500 to-red-600"
     },
     {
-      name: "Остаток асфальта",
-      percentage: "5-8%",
-      description: "Перерабатывается в кирпич — ноль отходов",
-      icon: Package,
+      name: "Базовое масло",
+      percentage: "70-80%",
+      description: "Основной продукт переработки высокого качества",
+      icon: Droplet,
+      color: "from-[#fcd900] to-yellow-600"
+    },
+    {
+      name: "Кубовый остаток",
+      percentage: "15-25%",
+      description: "Пластификатор — смесь тяжёлых продуктов и смол",
+      icon: Droplet,
       color: "from-gray-600 to-gray-800"
-    }
-  ];
-
-  const oilTypes = [
-    "Отработанное моторное масло",
-    "Отработанное смазочное масло",
-    "Отработанное судовое масло",
-    "Черное моторное масло",
-    "Отработанное минеральное масло",
-    "Отработанное гидравлическое масло",
-    "Грязное трансмиссионное масло",
-    "Трансмиссионное масло"
-  ];
-
-  const advantages = [
-    {
-      title: "Только 1 катализатор",
-      description: "Требуется всего 1 вид катализатора (1-3%), что значительно снижает стоимость переработки до $30 за тонну",
-      icon: Beaker
-    },
-    {
-      title: "Низкое энергопотребление",
-      description: "Расход тепла: 3×10⁵ ккал и 40 кВтч электроэнергии для переработки 500 л/ч",
-      icon: Zap
-    },
-    {
-      title: "Высокое качество",
-      description: "Цвет переработанного масла №0.1-0.5, без неприятного запаха, соответствует стандартам качества",
-      icon: Award
-    },
-    {
-      title: "Экологичность",
-      description: "Без кислоты и глины, без вторичного загрязн��ния. Сертификаты: ISO9001:2008, SGS, CE, BV",
-      icon: Recycle
-    }
-  ];
-
-  const faqItems = [
-    {
-      q: "Как происходит переработка отработанного масла?",
-      a: "Используем систему мембранной дистилляции Vbolt VBT-DB. Процесс включает центрифугирование, тонкопленочное испарение, мембранную дистилляцию и каталитический крекинг при различных температурах."
-    },
-    {
-      q: "Какие виды масел вы принимаете?",
-      a: "Принимаем все виды отработанного промышленного масла: моторное, смазочное, судовое, минеральное, гидравлическое, трансмиссионное и другие — как минеральные, так и синтетические."
-    },
-    {
-      q: "Что получается в результате переработки?",
-      a: "80-90% — базовое масло SN75-SN500 высокого качества, 3-5% — вода для повторного использования, 5-7% — легкий газойль для энергообеспечения, 5-8% — остаток асфальта для производства кирпича."
-    },
-    {
-      q: "Насколько экологична ваша технология?",
-      a: "Технология полностью экологична: не используются кислота и глина, отсутствует вторичное загрязнение. Имеем сертификаты ISO9001:2008, SGS, CE, BV. Все отходы перерабатываются."
-    },
-    {
-      q: "Какая стоимость переработки?",
-      a: "Стоимость переработки одной тонны отработанного масла не превышает $30. Используется только 1 катализатор (1-3%), что делает процесс экономически эффективным."
-    },
-    {
-      q: "Какое качество получаемого базового масла?",
-      a: "Получаем базовое масло акварельного цвета (№0.1-0.5) без неприятного запаха. Качество соответствует стандартам SN150, SN300, SN350, SN500 и может использоваться для производства смазочных материалов."
-    },
-    {
-      q: "Какая производительность завода?",
-      a: "Производительность установки — 500 литров в час. Завод работает круглосуточно, перерабатывая сотни тонн отработанного масла ежемесячно."
-    },
-    {
-      q: "Как начать сотрудничество?",
-      a: "Заполните заявку на сайте или позвоните. Обсудим объёмы, согласуем график вывоза, подпишем договор. После вывоза масла предоставим полный пакет документов."
     }
   ];
 
@@ -968,12 +913,11 @@ function AboutPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
         </motion.div>
       </section>
 
-      {/* Вакуумная дистилляция */}
+      {/* Вакуумная дистилляция - описание */}
       <section className="relative py-16 md:py-24 bg-black overflow-hidden">
-        {/* Фоновое изображение */}
         <div className="absolute inset-0">
           <ImageWithFallback
-            src="https://images.unsplash.com/photo-1689348745037-21adeb31dd2a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmR1c3RyaWFsJTIwZGlzdGlsbGF0aW9uJTIwY29sdW1ufGVufDF8fHx8MTc2NDE1MzcxN3ww&ixlib=rb-4.1.0&q=80&w=1080"
+            src="https://images.unsplash.com/photo-1689348745037-21adeb31dd2a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080"
             alt="Вакуумная дистилляция"
             className="w-full h-full object-cover opacity-20"
           />
@@ -986,128 +930,22 @@ function AboutPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
             <div className="h-[4px] w-[60px] bg-[#fcd900] mb-8 mx-auto" />
             <h2 className="font-['Roboto:Medium',sans-serif] leading-[50px] text-[36px] md:text-[44px] text-white mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
               Вакуумная дистилляция
             </h2>
-            <div className="max-w-[900px] mx-auto space-y-4">
-              <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[18px] text-white/90 tracking-[0.36px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                На установках вакуумного типа поддерживается давление порядка <span className="text-[#fcd900] font-['Roboto:Medium',sans-serif]">100-10 миллиметров ртутного столба</span>
+            <div className="max-w-[900px] mx-auto">
+              <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[30px] text-[18px] text-white/90 tracking-[0.36px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                Вакуумная дистилляция отработанного масла — это современная технология очистки и регенерации, которая использует пониженное давление (вакуум) для снижения температуры кипения компонентов масла. Это позволяет разделять масло на фракции без высоких температур, что сохраняет качество продукта и снижает энергозатраты.
               </p>
-              <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[18px] text-white/90 tracking-[0.36px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                При таком давлении базовые масла кипят без разложения. Нагрев сырья не превышает <span className="text-[#fcd900] font-['Roboto:Medium',sans-serif]">340 °С</span>
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Три дистиллята */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {vacuumDistillation.map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.15, duration: 0.6 }}
-                className="group"
-              >
-                <div className="relative backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 h-full hover:bg-white/10 transition-all duration-300 hover:border-[#fcd900]/30 hover:shadow-2xl hover:shadow-[#fcd900]/10">
-                  {/* Иконка с градиентом */}
-                  <div className="mb-6">
-                    <div className={`size-[70px] bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300`}>
-                      <item.icon className="size-[35px] text-white" strokeWidth={2} />
-                    </div>
-                  </div>
-
-                  {/* Заголовок */}
-                  <h3 className="font-['Roboto:Medium',sans-serif] leading-[32px] text-[22px] text-white mb-4" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    {item.title}
-                  </h3>
-
-                  {/* Описание */}
-                  <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[26px] text-[16px] text-white/70 tracking-[0.32px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    {item.description}
-                  </p>
-
-                  {/* Декоративная линия */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#fcd900]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Галерея оборудования и технические параме��ры */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8"
-          >
-            {/* Свипер галерея */}
-            <VacuumGallery />
-
-            {/* Технические параметры */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col justify-center">
-              <h3 className="font-['Roboto:Medium',sans-serif] leading-[36px] text-[26px] text-white mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
-                Технические параметры
-              </h3>
-              
-              <div className="space-y-6">
-                <div>
-                  <div className="flex items-baseline gap-3 mb-2">
-                    <span className="text-[#fcd900] font-['Roboto:Bold',sans-serif] text-[32px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      100-10
-                    </span>
-                    <span className="text-white/70 font-['Roboto:Regular',sans-serif] text-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      мм рт. ст.
-                    </span>
-                  </div>
-                  <p className="text-white/60 font-['Roboto:Regular',sans-serif] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Рабочее давление в установке
-                  </p>
-                </div>
-
-                <div className="h-[1px] bg-white/10" />
-
-                <div>
-                  <div className="flex items-baseline gap-3 mb-2">
-                    <span className="text-[#fcd900] font-['Roboto:Bold',sans-serif] text-[32px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      340
-                    </span>
-                    <span className="text-white/70 font-['Roboto:Regular',sans-serif] text-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      °C
-                    </span>
-                  </div>
-                  <p className="text-white/60 font-['Roboto:Regular',sans-serif] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Максимальная температура нагрева
-                  </p>
-                </div>
-
-                <div className="h-[1px] bg-white/10" />
-
-                <div>
-                  <div className="flex items-baseline gap-3 mb-2">
-                    <span className="text-[#fcd900] font-['Roboto:Bold',sans-serif] text-[32px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      3
-                    </span>
-                    <span className="text-white/70 font-['Roboto:Regular',sans-serif] text-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      фракции
-                    </span>
-                  </div>
-                  <p className="text-white/60 font-['Roboto:Regular',sans-serif] text-[14px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    Разделение на дистилляты
-                  </p>
-                </div>
-              </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Технология Vbolt VBT-DB */}
+      {/* Принцип работы - 5 шагов */}
       <section className="relative py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="px-[20px] md:px-[100px] lg:px-[260px]">
           <motion.div
@@ -1119,41 +957,29 @@ function AboutPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
           >
             <div className="h-[4px] w-[60px] bg-[#fcd900] mb-8 mx-auto" />
             <h2 className="font-['Roboto:Medium',sans-serif] leading-[50px] text-[36px] md:text-[44px] text-black mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
-              Технология мембранной дистилляции Vbolt
+              Принцип работы
             </h2>
-            <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[18px] text-black tracking-[0.36px] opacity-80 max-w-[800px] mx-auto" style={{ fontVariationSettings: "'wdth' 100" }}>
-              Система VBT-DB — передовая технология переработки отработанного масла с высоким выходом качественного базового масла
-            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          <div className="space-y-6">
             {processSteps.map((step, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: idx * 0.15, duration: 0.6 }}
-                className="group relative"
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                className="bg-white border-l-4 border-[#fcd900] p-8 rounded-r-2xl shadow-lg hover:shadow-xl transition-all"
               >
-                <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                  <div className="absolute inset-0 bg-gradient-to-br from-black/60 to-black/30 z-10" />
-                  <ImageWithFallback
-                    src={step.image}
-                    alt={step.title}
-                    className="w-full h-[300px] object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  
-                  <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
-                    <div className="mb-4">
-                      <div className="size-[60px] bg-[#fcd900] rounded-xl flex items-center justify-center">
-                        <step.icon className="size-[30px] text-black" strokeWidth={2} />
-                      </div>
-                    </div>
-                    <h3 className="font-['Roboto:Medium',sans-serif] leading-[32px] text-[22px] text-white mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
+                <div className="flex items-start gap-6">
+                  <div className="size-[60px] bg-gradient-to-br from-[#fcd900] to-[#e5c400] rounded-xl flex items-center justify-center shrink-0">
+                    <span className="font-['Roboto:Bold',sans-serif] text-[24px] text-black">{step.step}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-['Roboto:Medium',sans-serif] leading-[32px] text-[20px] text-black mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {step.title}
                     </h3>
-                    <p className="font-['Roboto:Regular',sans-serif] leading-[24px] text-[16px] text-white/90" style={{ fontVariationSettings: "'wdth' 100" }}>
+                    <p className="font-['Roboto:Regular',sans-serif] leading-[26px] text-[16px] text-black opacity-80" style={{ fontVariationSettings: "'wdth' 100" }}>
                       {step.description}
                     </p>
                   </div>
@@ -1164,8 +990,81 @@ function AboutPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
         </div>
       </section>
 
-      {/* Результаты переработки */}
+      {/* Преимущества технологии */}
+      <section className="relative py-16 md:py-24 px-[20px] md:px-[100px] lg:px-[260px] bg-gray-50">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="h-[4px] w-[60px] bg-[#fcd900] mb-8" />
+          <h2 className="font-['Roboto:Medium',sans-serif] leading-[50px] text-[36px] text-black mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
+            Преимущества вакуумной дистилляции
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {advantages.map((advantage, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                className="bg-white border-l-4 border-[#fcd900] p-8 rounded-r-2xl shadow-lg hover:shadow-xl transition-all"
+              >
+                <div className="mb-4">
+                  <div className="size-[60px] bg-gradient-to-br from-[#fcd900] to-[#e5c400] rounded-xl flex items-center justify-center">
+                    <advantage.icon className="size-[30px] text-black" strokeWidth={2} />
+                  </div>
+                </div>
+                <h3 className="font-['Roboto:Medium',sans-serif] leading-[32px] text-[20px] text-black mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  {advantage.title}
+                </h3>
+                <p className="font-['Roboto:Regular',sans-serif] leading-[26px] text-[16px] text-black opacity-80" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  {advantage.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Применение */}
       <section className="relative py-16 md:py-24 px-[20px] md:px-[100px] lg:px-[260px] bg-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="h-[4px] w-[60px] bg-[#fcd900] mb-8" />
+          <h2 className="font-['Roboto:Medium',sans-serif] leading-[50px] text-[36px] text-black mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
+            Применение
+          </h2>
+
+          <div className="space-y-4">
+            {applications.map((app, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                className="flex gap-4 items-center bg-gray-50 p-6 rounded-lg hover:bg-[#fcd900]/10 transition-colors"
+              >
+                <div className="size-[12px] rounded-full bg-[#fcd900] shrink-0" />
+                <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[26px] text-[17px] text-black tracking-[0.36px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+                  {app}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Результаты переработки */}
+      <section className="relative py-16 md:py-24 px-[20px] md:px-[100px] lg:px-[260px] bg-gray-50">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1178,10 +1077,10 @@ function AboutPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
           </h2>
           
           <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[18px] text-black tracking-[0.36px] mb-12 opacity-80 max-w-[700px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-            Эффективная переработка с максимальным выходом полезных продуктов и нулевыми отходами
+            Эффективная переработка с максимальным выходом полезных продуктов
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {outputProducts.map((product, idx) => (
               <motion.div
                 key={idx}
@@ -1189,7 +1088,7 @@ function AboutPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1, duration: 0.5 }}
-                className="relative bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl transition-all group"
+                className="relative bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl transition-all group"
               >
                 <div className={`absolute top-0 left-0 w-full h-1 rounded-t-2xl bg-gradient-to-r ${product.color}`} />
                 
@@ -1213,181 +1112,6 @@ function AboutPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
                 </p>
               </motion.div>
             ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Преимущества технологии */}
-      <section className="relative py-16 md:py-24 px-[20px] md:px-[100px] lg:px-[260px] bg-gray-50">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="h-[4px] w-[60px] bg-[#fcd900] mb-8" />
-          <h2 className="font-['Roboto:Medium',sans-serif] leading-[50px] text-[36px] text-black mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
-            Преимущества оборудования
-          </h2>
-          
-          <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[18px] text-black tracking-[0.36px] mb-12 opacity-80 max-w-[700px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-            Технология Vbolt VBT-DB сертифицирована по международным стандартам
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {advantages.map((advantage, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.5 }}
-                className="bg-white border-l-4 border-[#fcd900] p-8 rounded-r-2xl shadow-lg hover:shadow-xl transition-all"
-              >
-                <div className="flex items-start gap-6">
-                  <div className="size-[60px] bg-gradient-to-br from-[#fcd900] to-[#e5c400] rounded-xl flex items-center justify-center shrink-0">
-                    <advantage.icon className="size-[30px] text-black" strokeWidth={2} />
-                  </div>
-                  <div>
-                    <h3 className="font-['Roboto:Medium',sans-serif] leading-[32px] text-[20px] text-black mb-3" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      {advantage.title}
-                    </h3>
-                    <p className="font-['Roboto:Regular',sans-serif] leading-[26px] text-[16px] text-black opacity-80" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      {advantage.description}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Сертификаты */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="mt-12 bg-gradient-to-r from-[#fcd900]/10 via-[#fcd900]/5 to-transparent border border-[#fcd900]/30 rounded-2xl p-8"
-          >
-            <div className="flex flex-wrap items-center gap-4">
-              <Shield className="size-[40px] text-[#fcd900]" strokeWidth={1.5} />
-              <div>
-                <h3 className="font-['Roboto:Medium',sans-serif] leading-[28px] text-[20px] text-black mb-2" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  Сертифицированное оборудование
-                </h3>
-                <p className="font-['Roboto:Regular',sans-serif] leading-[24px] text-[16px] text-black opacity-70" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  ISO 9001:2008 • SGS • CE • BV
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Виды принимаемых масел */}
-      <section className="relative py-16 md:py-24 px-[20px] md:px-[100px] lg:px-[260px] bg-white">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="h-[4px] w-[60px] bg-[#fcd900] mb-8" />
-          <h2 className="font-['Roboto:Medium',sans-serif] leading-[50px] text-[36px] text-black mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
-            Виды принимаемых масел
-          </h2>
-          
-          <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[18px] text-black tracking-[0.36px] mb-12 opacity-80 max-w-[700px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-            Технология Vbolt позволяет перерабатывать все виды отработанного промышленного масла — минеральное и синтетическое
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {oilTypes.map((type, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.5 }}
-                className="flex gap-4 items-center bg-gray-50 p-6 rounded-lg hover:bg-[#fcd900]/10 transition-colors"
-              >
-                <div className="size-[12px] rounded-full bg-[#fcd900] shrink-0" />
-                <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[26px] text-[17px] text-black tracking-[0.36px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                  {type}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Памятка */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="bg-gradient-to-br from-[#fcd900]/10 to-transparent border-l-4 border-[#fcd900] p-8 rounded-r-lg"
-          >
-            <h3 className="font-['Roboto:Medium',sans-serif] leading-[32px] text-[24px] text-black mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
-              Требования к качеству масла
-            </h3>
-            <div className="space-y-4">
-              {[
-                "Содержание воды — не более 5%",
-                "Без примесей антифриза и растворителей",
-                "Чистая тара без остатков химикатов",
-                "Правильное хранение на площадке",
-                "Минимальный объём от 200 литров"
-              ].map((item, idx) => (
-                <div key={idx} className="flex gap-3 items-start">
-                  <Check className="size-[18px] text-[#fcd900] mt-1 shrink-0" strokeWidth={3} />
-                  <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[17px] text-black tracking-[0.36px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    {item}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* FAQ */}
-      <section className="relative py-16 md:py-24 px-[20px] md:px-[100px] lg:px-[260px] bg-gray-50">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="h-[4px] w-[60px] bg-[#fcd900] mb-8" />
-          <h2 className="font-['Roboto:Medium',sans-serif] leading-[50px] text-[36px] text-black mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
-            Часто задаваемые вопросы
-          </h2>
-          
-          <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[18px] text-black tracking-[0.36px] mb-12 opacity-80 max-w-[700px]" style={{ fontVariationSettings: "'wdth' 100" }}>
-            Ответы на ключевые вопросы о технологии переработки и условиях сотрудничества
-          </p>
-
-          <div className="max-w-[920px]">
-            <Accordion type="single" collapsible className="space-y-4">
-              {faqItems.map((faq, idx) => (
-                <AccordionItem
-                  key={idx}
-                  value={`item-${idx}`}
-                  className="bg-white border-l-4 border-[#fcd900] rounded-r-lg px-6 border-b-0"
-                >
-                  <AccordionTrigger className="hover:no-underline">
-                    <span className="font-['Roboto:Medium',sans-serif] leading-[32px] text-[18px] md:text-[20px] text-black text-left" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      {faq.q}
-                    </span>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <p className="font-['Roboto:Regular',sans-serif] font-normal leading-[28px] text-[17px] text-black tracking-[0.36px] opacity-80" style={{ fontVariationSettings: "'wdth' 100" }}>
-                      {faq.a}
-                    </p>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
           </div>
         </motion.div>
       </section>
@@ -1464,16 +1188,18 @@ function ServicesPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
       ]
     },
     {
-      title: "Экологическая документация",
-      description: "Готовим и согласуем комплект документов: инструкции, экопаспорт, инвентаризацию, нормативы образования отходов, разрешения и регламенты производственного контроля.",
+      title: "Разработка экологической документации",
+      description: "Услуги по разработке документации по охране окружающей среды и обращению с отходами. Разработка в кратчайшие сроки. Профессиональная команда опытных экспертов и специалистов.",
       image: "https://images.unsplash.com/photo-1674471361339-2e1e1dbd3e73?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1200",
       icon: FileText,
       features: [
-        "Инструкции по обраще��ию с отходами",
-        "Экологический паспорт предприятия",
-        "Инвентаризация и акты",
-        "Нормативы образования отходов",
-        "Консультации по хранению и передаче"
+        "Разработка и согласование инструкции по обращению с отходами производства с территориальным органом Министерства природных ресурсов и охраны окружающей среды",
+        "Разработка экологического паспорта предприятия",
+        "Проведение инвентаризации отходов производства, оформление акта инвентаризации отходов производства",
+        "Разработка нормативов образования отходов производства",
+        "Получение разрешения на захоронение отходов производства",
+        "Разработка инструкции по осуществлению производственных наблюдений в области охраны окружающей среды, рационального использования природных ресурсов",
+        "Консультации в области обращения с отходами"
       ]
     }
   ];
@@ -1690,7 +1416,7 @@ function PointsPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
     {
       title: "Передвижной заготовительный пункт",
       description: "Выезжаем туда, где вам удобно, и скупаем отработанные масла — от небольших партий до крупнотоннажных сливов. Работаем с канистрами, бочками и IBC-еврокубами.",
-      image: "https://images.unsplash.com/photo-1656988826221-fa8652b1a08c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0YW5rZXIlMjB0cnVjayUyMG9pbCUyMGZ1ZWx8ZW58MXx8fHwxNzY0MTYyNTQwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      image: imgMobilePoint,
       icon: MapPin,
       features: [
         "Выезд по всей Беларуси",
@@ -1703,7 +1429,7 @@ function PointsPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
     {
       title: "Наш автопарк",
       description: "Собственная спецтехника для откачки и транспортировки отработанных масел. Подбираем транспорт под ваш объём — от микроавтобуса до вагон-цистерн.",
-      image: "https://images.unsplash.com/photo-1572649187065-3256039fee72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmdWVsJTIwdGFua2VyJTIwZmxlZXR8ZW58MXx8fHwxNzYyODcxNzIwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      image: imgAutopark,
       icon: Truck,
       features: [
         "Микроавтобус — до 8 000 л (манёвренный)",
@@ -1937,6 +1663,14 @@ function PointsPage({ onNavigate }: { onNavigate: (slug: string) => void }) {
 // ============= СТРАНИЦА: КОНТАКТЫ =============
 function ContactsPage({ onOpenCompanyCard }: { onOpenCompanyCard: () => void }) {
   const [volumeValue, setVolumeValue] = useState(500);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-black">
@@ -1945,7 +1679,7 @@ function ContactsPage({ onOpenCompanyCard }: { onOpenCompanyCard: () => void }) 
         <img 
           alt="Промышленная нефтяная платформа на закате" 
           className="absolute inset-0 w-full h-full object-cover object-center md:object-right-top"
-          src={imgHeroBg} 
+          src={isMobile ? imgHeroBgMobile : imgHeroBgDesktop} 
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
@@ -2029,7 +1763,7 @@ function ContactsPage({ onOpenCompanyCard }: { onOpenCompanyCard: () => void }) 
                     </div>
                   </div>
 
-                  {/* Карточка предприятия */}
+                  {/* Карточка партнера */}
                   <div className="pt-6 border-t border-white/20">
                     <motion.button
                       onClick={onOpenCompanyCard}
@@ -2041,7 +1775,7 @@ function ContactsPage({ onOpenCompanyCard }: { onOpenCompanyCard: () => void }) 
                         <div className="flex items-center gap-3">
                           <div className="size-[12px] bg-[#fcd900] rounded-full animate-pulse" />
                           <p className="font-['Roboto:Bold',sans-serif] text-[18px] text-white" style={{ fontVariationSettings: "'wdth' 100" }}>
-                            Карточка предприятия
+                            Карточка партнера
                           </p>
                         </div>
                         <ArrowRight className="size-5 text-[#fcd900] group-hover:translate-x-1 transition-transform" />
@@ -2133,7 +1867,7 @@ function ContactsPage({ onOpenCompanyCard }: { onOpenCompanyCard: () => void }) 
                   <option className="bg-black">Турбинное</option>
                   <option className="bg-black">Компрессионное</option>
                   <option className="bg-black">Индустриальное</option>
-                  <option className="bg-black">Диз��льное</option>
+                  <option className="bg-black">Дизельное</option>
                   <option className="bg-black">Авиационное</option>
                   <option className="bg-black">Трансформаторное</option>
                   <option className="bg-black">Другое</option>
