@@ -41,7 +41,7 @@ export function Footer({ onNavigate }: { onNavigate: (slug: string) => void }) {
                 </div>
                 <div>
                   <p className="font-['Roboto:Bold',sans-serif] text-white text-[20px] tracking-wide" style={{ fontVariationSettings: "'wdth' 100" }}>
-                    ГудОйл
+                    Трейднефтепром
                   </p>
                   <p className="font-['Roboto:Regular',sans-serif] text-[#fcd900] text-[12px] tracking-wider uppercase" style={{ fontVariationSettings: "'wdth' 100" }}>
                     Переработка масел
@@ -49,7 +49,7 @@ export function Footer({ onNavigate }: { onNavigate: (slug: string) => void }) {
                 </div>
               </div>
               <p className="font-['Roboto:Regular',sans-serif] text-white/70 text-[14px] leading-[24px] mb-6" style={{ fontVariationSettings: "'wdth' 100" }}>
-                Собственный завод по переработке отработанных масел с технологией Vbolt VBT-DB
+                Собственный завод по переработке отработанных масел путем вакуумной дистилляции
               </p>
               <div className="flex gap-3">
                 <motion.a
@@ -148,7 +148,7 @@ export function Footer({ onNavigate }: { onNavigate: (slug: string) => void }) {
           <div className="px-[20px] md:px-[60px] lg:px-[120px] py-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="font-['Roboto:Regular',sans-serif] text-white/50 text-[13px] text-center md:text-left" style={{ fontVariationSettings: "'wdth' 100" }}>
-                © {new Date().getFullYear()} ГудОйл. Все права защищены. УНП: {SITE_CONFIG.unp}
+                © {new Date().getFullYear()} ООО «Трейднефтепром». Все права защищены. УНП: {SITE_CONFIG.unp}
               </p>
               <motion.button
                 onClick={scrollToTop}
