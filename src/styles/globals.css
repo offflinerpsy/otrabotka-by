@@ -2,35 +2,35 @@
 
 :root {
   --font-size: 16px;
-  --background: #ffffff;
-  --foreground: oklch(0.145 0 0);
-  --card: #ffffff;
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #030213;
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #030213;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #030213;
-  --destructive: #d4183d;
-  --destructive-foreground: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
-  --input: transparent;
+  --background: 0 0% 100%;
+  --foreground: 220 20% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 20% 15%;
+  --primary: 50 97% 49%;
+  --primary-foreground: 220 20% 10%;
+  --secondary: 220 15% 96%;
+  --secondary-foreground: 220 20% 15%;
+  --muted: 220 15% 94%;
+  --muted-foreground: 220 10% 45%;
+  --accent: 50 97% 49%;
+  --accent-foreground: 220 20% 10%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 15% 88%;
+  --input: 220 15% 88%;
   --input-background: #f3f3f5;
   --switch-background: #cbced4;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
+  --ring: 50 97% 49%;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
+  --radius: 1.5rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: #030213;
@@ -39,28 +39,34 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Custom design tokens */
+  --glass-bg: 220 20% 15%;
+  --glass-border: 220 20% 15%;
+  --accent-glow: 50 97% 49%;
+  --hero-overlay: 220 20% 10%;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  --background: 220 20% 8%;
+  --foreground: 0 0% 98%;
+  --card: 220 20% 12%;
+  --card-foreground: 0 0% 98%;
+  --popover: 220 20% 8%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 50 97% 49%;
+  --primary-foreground: 220 20% 10%;
+  --secondary: 220 15% 18%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 220 15% 20%;
+  --muted-foreground: 220 10% 60%;
+  --accent: 50 97% 49%;
+  --accent-foreground: 220 20% 10%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 15% 25%;
+  --input: 220 15% 25%;
+  --ring: 50 97% 49%;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --chart-1: oklch(0.488 0.243 264.376);
@@ -76,6 +82,11 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+  
+  /* Custom design tokens */
+  --glass-bg: 0 0% 100%;
+  --glass-border: 0 0% 100%;
+  --hero-overlay: 220 20% 10%;
 }
 
 @theme inline {
@@ -205,4 +216,128 @@ html {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(252, 217, 0, 0.5);
+}
+
+/* Lovable Design System Classes */
+.glass-card {
+  border-radius: 1.5rem;
+  border-width: 1px;
+  border-color: hsl(var(--border));
+  background-color: hsl(var(--card));
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.glass-card-hover {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+
+.glass-card-hover:hover {
+  border-color: hsl(var(--primary) / 0.3);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.glass-card-dark {
+  border-radius: 1.5rem;
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(24px);
+}
+
+.accent-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(45 100% 42%) 100%);
+}
+
+.text-gradient-accent {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(45 100% 42%) 100%);
+}
+
+.hero-overlay {
+  background: linear-gradient(to bottom, rgba(20, 24, 31, 0.7) 0%, rgba(20, 24, 31, 0.85) 100%);
+}
+
+/* HSL color utilities for AboutPage */
+.bg-background {
+  background-color: hsl(var(--background));
+}
+
+.bg-secondary {
+  background-color: hsl(var(--secondary));
+}
+
+.bg-card {
+  background-color: hsl(var(--card));
+}
+
+.bg-primary {
+  background-color: hsl(var(--primary));
+}
+
+.bg-primary\/10 {
+  background-color: hsl(var(--primary) / 0.1);
+}
+
+.bg-primary\/30 {
+  background-color: hsl(var(--primary) / 0.3);
+}
+
+.bg-foreground {
+  background-color: hsl(var(--foreground));
+}
+
+.bg-foreground\/5 {
+  background-color: hsl(var(--foreground) / 0.05);
+}
+
+.bg-foreground\/10 {
+  background-color: hsl(var(--foreground) / 0.1);
+}
+
+.text-foreground {
+  color: hsl(var(--foreground));
+}
+
+.text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+.text-primary {
+  color: hsl(var(--primary));
+}
+
+.text-primary-foreground {
+  color: hsl(var(--primary-foreground));
+}
+
+.text-background {
+  color: hsl(var(--background));
+}
+
+.border-border {
+  border-color: hsl(var(--border));
+}
+
+.border-primary {
+  border-color: hsl(var(--primary));
+}
+
+.border-primary\/30 {
+  border-color: hsl(var(--primary) / 0.3);
+}
+
+.border-foreground\/20 {
+  border-color: hsl(var(--foreground) / 0.2);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
